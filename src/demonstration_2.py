@@ -54,5 +54,39 @@ def are_words_sorted(words, alpha_order):
     Output:
     bool
     """
-    # Your code here
+    # Build a dictionary structure to lookup the index of each character
+    # What do I know? The character
+    # What do I want to lookup? Its index in the alphabet
+    # So my dictionary has characters for keys, and alphabet indices for values
+    alphabet = {letter: i for (i, letter) in enumerate(alpha_order)}
 
+    # Starting at the beginning of the words list, look through and compare each word to the next...
+    for i in range(len(words)-1): # for loop O(n)
+        word1 = words[i] # O(1)
+        word2 = words[i+1] # O(1)
+        
+        # Compare the two words letter by letter as needed:
+        for j in range(min(len(word1), len(word2))):
+            letter1 = word1[j]
+            letter2 = word2[j]
+            if letter1 != letter2:
+                if alphabet[letter1] > alphabet[letter2]: # O(1) dictionary lookups
+                    return False
+                # Otherwise, these words are sorted! Move on to the next word
+                break
+
+            # Otherwise, keep going
+
+        # If all the letters match, then compare by length
+        if len(word1) > len(word2):
+            return False
+
+    # Looks like everything is good!
+    return True
+
+print(are_words_sorted(["lambda","school"], "hlabcdefgijkmnopqrstuvwxyz")) #--> True
+print(are_words_sorted(["were","where","yellow"], "habcdefgijklmnopqrstuvwxyz")) #--> False
+print(are_words_sorted(["lambda","lamb"], "abcdefghijklmnopqrstuvwxyz")) #--> False
+
+# Time complexity: O(n)
+# Space complexity: O(n) in general, O(1) because the prompt specified dictionary size n = 26
